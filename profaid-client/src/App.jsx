@@ -5,6 +5,7 @@ import ChangePassword from "./pages/ChangePassword";
 import HistoryArchive from "./pages/HistoryArchive";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import ManageProfessors from "./pages/ManageProfessors";
 import MyDoubts from "./pages/MyDoubts";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
@@ -23,6 +24,7 @@ function App() {
         <Route path="/view-doubt/:doubtID" element={<ViewDoubt/>}/>
         <Route path="/professor-dashboard" element={<ProfessorDashboard/>}/>
         <Route path="/admin-dashboard" element={<AdminDashboard/>}/>
+        <Route path="/manage-professors" element={<ManageProfessors/>}/>
       </Routes>
     </Router>
   );

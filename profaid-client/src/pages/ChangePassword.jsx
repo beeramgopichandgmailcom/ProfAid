@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUserCircle } from "react-icons/fa";
 
 const ChangePassword = () => {
   const [oldPassword, setOldPassword] = useState("");
@@ -7,7 +7,12 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const userID = localStorage.getItem("ID") || "";  // ID (StudentID or ProfessorID)
+  // For toggling password visibility
+  const [showOld, setShowOld] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const userID = localStorage.getItem("ID") || ""; // ID (StudentID or ProfessorID)
   const role = localStorage.getItem("role") || ""; // "Student" or "Professor"
 
   const handleSubmit = async (e) => {
@@ -18,13 +23,12 @@ const ChangePassword = () => {
       return;
     }
 
-    // Dynamically set the API endpoint based on role
     const endpoint =
-  role === "Professor"
-    ? "http://localhost:5000/api/professors/change-password"
-    : role === "Student"
-    ? "http://localhost:5000/api/students/change-password"
-    : "http://localhost:5000/api/admins/change-password";
+      role === "Professor"
+        ? "http://localhost:5000/api/professors/change-password"
+        : role === "Student"
+        ? "http://localhost:5000/api/students/change-password"
+        : "http://localhost:5000/api/admins/change-password";
 
     try {
       const res = await fetch(endpoint, {
@@ -57,6 +61,7 @@ const ChangePassword = () => {
 
   return (
     <div>
+      {/* Navbar */}
       <nav
         style={{
           display: "flex",
@@ -73,6 +78,7 @@ const ChangePassword = () => {
         </span>
       </nav>
 
+      {/* Change Password Form */}
       <div
         style={{
           maxWidth: "500px",
@@ -87,32 +93,77 @@ const ChangePassword = () => {
         {message && <p style={{ color: "red" }}>{message}</p>}
 
         <form onSubmit={handleSubmit}>
+          {/* Old Password */}
           <label>Old Password</label>
-          <input
-            type="password"
-            value={oldPassword}
-            onChange={(e) => setOldPassword(e.target.value)}
-            required
-            style={{ display: "block", width: "100%", marginBottom: "10px" }}
-          />
+          <div style={{ position: "relative", marginBottom: "10px" }}>
+            <input
+              type={showOld ? "text" : "password"}
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+              style={{ display: "block", width: "100%", paddingRight: "35px" }}
+            />
+            <span
+              onClick={() => setShowOld(!showOld)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+              }}
+            >
+              {showOld ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
+          {/* New Password */}
           <label>New Password</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-            style={{ display: "block", width: "100%", marginBottom: "10px" }}
-          />
+          <div style={{ position: "relative", marginBottom: "10px" }}>
+            <input
+              type={showNew ? "text" : "password"}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              style={{ display: "block", width: "100%", paddingRight: "35px" }}
+            />
+            <span
+              onClick={() => setShowNew(!showNew)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+              }}
+            >
+              {showNew ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
+          {/* Confirm Password */}
           <label>Confirm New Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            style={{ display: "block", width: "100%", marginBottom: "10px" }}
-          />
+          <div style={{ position: "relative", marginBottom: "10px" }}>
+            <input
+              type={showConfirm ? "text" : "password"}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              style={{ display: "block", width: "100%", paddingRight: "35px" }}
+            />
+            <span
+              onClick={() => setShowConfirm(!showConfirm)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+              }}
+            >
+              {showConfirm ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
 
           <button
             type="submit"

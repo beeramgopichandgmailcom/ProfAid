@@ -13,8 +13,7 @@ const AskDoubt = () => {
   useEffect(() => {
     const StudentID = localStorage.getItem("ID") || "";
     const Branch = localStorage.getItem("Branch") || "";
-    console.log("StudentID from localStorage:",StudentID);
-    console.log("Branch from localStorage:",Branch);
+  
     setStudent({ StudentID, Branch });
 
     // Fetch subjects for this branch from backend

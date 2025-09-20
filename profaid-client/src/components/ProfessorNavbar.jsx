@@ -1,19 +1,33 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 
 const ProfessorNavbar = () => {
-  const navigate = useNavigate();
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   const professorID = localStorage.getItem("ID") || "";
   const name = localStorage.getItem("Name") || "";
   const email = localStorage.getItem("Email") || "";
   const department = localStorage.getItem("Department") || "";
+
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/login";
   };
+
+  // ✅ Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav
@@ -27,11 +41,13 @@ const ProfessorNavbar = () => {
       }}
     >
       <h2>ProfAid</h2>
-      <div
-        style={{ position: "relative", cursor: "pointer" }}
-        onClick={() => setShowProfileDropdown((prev) => !prev)}
-      >
-        <FaUserCircle size={28} color="white" />
+
+      <div ref={dropdownRef} style={{ position: "relative", cursor: "pointer" }}>
+        <FaUserCircle
+          size={28}
+          color="white"
+          onClick={() => setShowProfileDropdown((prev) => !prev)}
+        />
         {showProfileDropdown && (
           <div
             style={{
@@ -53,7 +69,7 @@ const ProfessorNavbar = () => {
             <p><strong>Department:</strong> {department}</p>
             <hr />
             <button
-              onClick={() => window.location.href = "/change-password"}
+              onClick={() => (window.location.href = "/change-password")}
               style={{
                 display: "block",
                 width: "100%",

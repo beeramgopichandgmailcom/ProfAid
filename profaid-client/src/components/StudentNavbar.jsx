@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +12,9 @@ const StudentNavbar = () => {
   });
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
+  // ✅ Ref to detect outside click
+  const dropdownRef = useRef(null);
+
   useEffect(() => {
     const ID = localStorage.getItem("ID") || "";
     const Name = localStorage.getItem("Name") || "";
@@ -21,9 +24,26 @@ const StudentNavbar = () => {
     setStudent({ ID, Name, Email, Branch });
   }, []);
 
+  useEffect(() => {
+    // ✅ Close dropdown when clicking outside
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   return (
@@ -39,18 +59,23 @@ const StudentNavbar = () => {
     >
       <h2>ProfAid</h2>
 
+      {/* ✅ Wrap icon + dropdown in ref */}
       <div
+        ref={dropdownRef}
         style={{ position: "relative", cursor: "pointer" }}
-        onClick={() => setShowProfileDropdown((prev) => !prev)}
       >
-        <FaUserCircle size={28} color="white" />
+        <FaUserCircle
+          size={28}
+          color="white"
+          onClick={() => setShowProfileDropdown((prev) => !prev)}
+        />
         {showProfileDropdown && (
           <div
             style={{
               position: "absolute",
               top: "100%",
               right: 0,
-              background: "red",
+              background: "white", // ✅ changed from red to white
               color: "black",
               border: "1px solid #ccc",
               padding: "10px",

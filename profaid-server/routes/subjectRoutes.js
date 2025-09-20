@@ -11,7 +11,7 @@ router.get("/", async (req, res) => {
     }
 
     // ✅ match Department in DB
-    const subjects = await Subject.find({ Department: department }).select("SubjectName -_id");
+    const subjects = await Subject.find({ Departments: department }).select("SubjectID SubjectName -_id");
     res.json(subjects.map(sub => sub.SubjectName));
   } catch (err) {
     res.status(500).json({ message: err.message });

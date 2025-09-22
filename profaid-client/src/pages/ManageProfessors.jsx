@@ -144,7 +144,7 @@ const ManageProfessors = () => {
               <th>ID</th>
               <th>Name</th>
               <th>Department</th>
-              <th>Subjects</th> {/* ✅ new column for clarity */}
+              <th>Subjects</th>
               <th>Actions</th>
             </tr>
           </thead>

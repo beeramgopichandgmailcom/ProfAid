@@ -129,7 +129,6 @@ const Login = () => {
       localStorage.setItem("ID", data.StudentID || data.ProfessorID || data.AdminID);
       localStorage.setItem("Name", data.Name || data.AdminName);
       localStorage.setItem("Email", data.Email);
-      localStorage.setItem("Password", password); // ⚠️ Storing password retained from original code for functional fidelity.
 
       if (data.Branch) localStorage.setItem("Branch", data.Branch);
       if (data.Department) localStorage.setItem("Department", data.Department);
